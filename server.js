@@ -10,15 +10,9 @@
 //
 "use strict";
 
-const http   = require('http');
-const url    = require('url');
-const bwipjs = (function() {
-    try {
-        return require('bwip-js');   // for installed usage
-    } catch (e) {
-        return require('..');        // for development use only
-    }
-})();
+const http = require('http');
+const url = require('url');
+const bwipjs = require('bwip-js')();
 
 console.log('bwip-js ' + bwipjs.BWIPJS_VERSION + ' / BWIPP ' + bwipjs.BWIPP_VERSION);
 
@@ -30,34 +24,19 @@ console.log('bwip-js ' + bwipjs.BWIPJS_VERSION + ' / BWIPP ' + bwipjs.BWIPP_VERS
 //bwipjs.loadFont('Inconsolata', 100,
 //        require('fs').readFileSync(__dirname + '/fonts/Inconsolata.otf', 'binary'));
 
-const server = http.createServer(function(req, res) {
+const server = http.createServer(function (req, res) {
     // If the url does not begin /?bcid= then 404.  Otherwise, we end up
     // returning 400 on requests like favicon.ico.
     if (req.url.indexOf('/?bcid=') != 0) {
-        res.writeHead(404, { 'Content-Type':'text/plain' });
+        res.writeHead(404, {'Content-Type': 'text/plain'});
         res.end('BWIP-JS: Unknown request format.', 'utf8');
     } else {
-        bwipjs.request(req, res, { sizelimit:1024*1024 });    // limit image size
+        bwipjs.request(req, res, {sizelimit: 1024 * 1024});    // limit image size
     }
 })
 
-let binds = 0;
-for (let i = 2; i < process.argv.length; i++) {
-    let a = /^([^:]+):(\d+)$/.exec(process.argv[i]);
-    if (a) {
-        if (a[1] == '*') {
-            server.listen(+a[2]);
-        } else {
-            server.listen(+a[2], a[1]);
-        }
-    } else {
-        console.log(process.argv[i] + ': option ignored...');
-    }
-    console.log('listening on ' + process.argv[i]);
-    binds++;
-}
-if (!binds) {
-    server.listen(process.env.PORT || 3030);
-    console.log('listening on *:' + (process.env.PORT || 3030));
-}
 
+const PORT = process.env.PORT || 3030
+server.listen(PORT, () => {
+    console.log(`Server running at port ${PORT}`)
+})
