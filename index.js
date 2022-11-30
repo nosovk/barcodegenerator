@@ -12,7 +12,7 @@
 
 const http = require('http');
 const url = require('url');
-const bwipjs = require('bwip-js')();
+const bwipjs = require('bwip-js');
 
 console.log('bwip-js ' + bwipjs.BWIPJS_VERSION + ' / BWIPP ' + bwipjs.BWIPP_VERSION);
 
