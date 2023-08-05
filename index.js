@@ -18,10 +18,10 @@ console.log('bwip-js ' + bwipjs.BWIPJS_VERSION + ' / BWIPP ' + bwipjs.BWIPP_VERS
 export default async function handler(req, res) {
     // If the url does not begin /?bcid= then 404.  Otherwise, we end up
     // returning 400 on requests like favicon.ico.
-    console.log("req.url", req.url);
+    console.log("req.url", req.url, req.url.indexOf('bcid='));
     if (req.url.indexOf('bcid=') != 0) {
         res.writeHead(404, {'Content-Type': 'text/plain'});
-        res.end('BWIP-JS: Unknown request format.', 'utf8');
+        res.end('BWIP-JS: Unknown request format. No bcid precent', 'utf8');
     } else {
         bwipjs.request(req, res, {sizelimit: 1024 * 1024});    // limit image size
     }
