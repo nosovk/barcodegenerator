@@ -1,16 +1,5 @@
-// file : bwip-js/server.js
-//
-// Simple node HTTP server that renders bar code images using bwip-js.
-//
-// Usage:  node server [address:port] ...
-//
-// To specify all interfaces, use * as the address
-//
-// If no address:port are specified, the default is: *:3030
-//
 "use strict";
 
-const http = require('http');
 const url = require('url');
 const bwipjs = require('bwip-js');
 
@@ -24,7 +13,9 @@ console.log('bwip-js ' + bwipjs.BWIPJS_VERSION + ' / BWIPP ' + bwipjs.BWIPP_VERS
 //bwipjs.loadFont('Inconsolata', 100,
 //        require('fs').readFileSync(__dirname + '/fonts/Inconsolata.otf', 'binary'));
 
-const server = http.createServer(function (req, res) {
+
+
+export default async function handler(req, res) {
     // If the url does not begin /?bcid= then 404.  Otherwise, we end up
     // returning 400 on requests like favicon.ico.
     console.log("req.url", req.url);
@@ -34,10 +25,4 @@ const server = http.createServer(function (req, res) {
     } else {
         bwipjs.request(req, res, {sizelimit: 1024 * 1024});    // limit image size
     }
-})
-
-
-const PORT = process.env.PORT || 3030
-server.listen(PORT, () => {
-    console.log(`Server running at port ${PORT}`)
-})
+}
