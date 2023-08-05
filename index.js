@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     // If the url does not begin /?bcid= then 404.  Otherwise, we end up
     // returning 400 on requests like favicon.ico.
     console.log("req.url", req.url, req.url.indexOf('bcid='));
-    if (req.url.indexOf('bcid=') != 0) {
+    if (req.url.indexOf('bcid=') === -1) {
         res.writeHead(404, {'Content-Type': 'text/plain'});
         res.end('BWIP-JS: Unknown request format. No bcid precent', 'utf8');
     } else {
